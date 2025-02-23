@@ -4,19 +4,24 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Drawing;
 using System.IO;
+using System.Windows.Interop;
+using System.Runtime.InteropServices;
 
 namespace SSAppend
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Main.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Main : Window
     {
         #region Properties
         private List<Bitmap> _screenshots = new List<Bitmap>();
         private Bitmap finalImage;
         #endregion Properties
-        public MainWindow()
+
+        #region Constants
+        #endregion Constants
+        public Main()
         {
             InitializeComponent();
         }
