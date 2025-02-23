@@ -14,6 +14,10 @@ namespace SSAppend
         private bool selecting = false;
         private Cursor originalCursor;
 
+        public Point StartPoint { get; private set; }
+        public Point EndPoint { get; private set; }
+
+
         #endregion Properties
 
         public FormSelection()
@@ -47,6 +51,7 @@ namespace SSAppend
         {
             selecting = true;
             start = e.Location;
+            StartPoint = e.Location;
         }
 
         private void FormSelection_MouseMove(object sender, MouseEventArgs e)
@@ -62,18 +67,12 @@ namespace SSAppend
         {
             selecting = false;
             end = e.Location;
-
-            this.Cursor = originalCursor;
-
+            EndPoint = e.Location;
             this.Close();
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            using (Brush semiTransparent = new SolidBrush(Color.FromArgb(150, 0, 0, 0)))
-            {
-                e.Graphics.FillRectangle(semiTransparent, this.ClientRectangle);
-            }
             if (selecting)
             {
                 Rectangle select = new Rectangle(
@@ -88,10 +87,14 @@ namespace SSAppend
                 {
                     path.AddRectangle(this.ClientRectangle);
                     path.AddRectangle(select);
-                    e.Graphics.FillPath(Brushes.Transparent, path);
+                    using (Brush highlightBrush = new SolidBrush(Color.FromArgb(80, Color.White)))
+                    {
+                        e.Graphics.FillRectangle(highlightBrush, select);
+                    }
+
                 }
 
-                using (Pen pen = new Pen(Color.Red, 2))
+                using (Pen pen = new Pen(Color.White, 3))
                 {
                     e.Graphics.DrawRectangle(pen, select);
                 }

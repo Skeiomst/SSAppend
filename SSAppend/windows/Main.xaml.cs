@@ -36,31 +36,34 @@ namespace SSAppend
             this.Hide();
             System.Threading.Thread.Sleep(300);
 
-            System.Drawing.Rectangle area = SelectArea();
-            if (area.Width > 0 && area.Height > 0)
+            using (var selection = new FormSelection())
             {
-                Bitmap screenshot = CaptureWindow(area);
-                _screenshots.Add(screenshot);
-                finalImage = AppendCaptures();
-                Clipboard.SetImage(BitmapCovert(finalImage));
-                imgPreview.Source = BitmapCovert(finalImage);
+                selection.ShowDialog();
+                System.Drawing.Rectangle area = new System.Drawing.Rectangle(
+                    Math.Min(selection.StartPoint.X, selection.EndPoint.X),
+                    Math.Min(selection.StartPoint.Y, selection.EndPoint.Y),
+                    Math.Abs(selection.EndPoint.X - selection.StartPoint.X),
+                    Math.Abs(selection.EndPoint.Y - selection.StartPoint.Y)
+                );
+                if (area.Width > 0 && area.Height > 0)
+                {
+                    Bitmap screenshot = CaptureWindow(area);
+                    _screenshots.Add(screenshot);
+                    finalImage = AppendCaptures();
+                    Clipboard.SetImage(BitmapCovert(finalImage));
+                    imgPreview.Source = BitmapCovert(finalImage);
+                }
             }
+
             this.Show();
         }
+
 
         private void btnLimpiar_Click(object sender, RoutedEventArgs e)
         {
             _screenshots.Clear();
             finalImage = null;
             imgPreview.Source = null;
-        }
-
-        private System.Drawing.Rectangle SelectArea()
-        {
-            using (var selection = new FormSelection())
-            {
-                return selection.SelectArea();
-            }
         }
 
         private Bitmap CaptureWindow(System.Drawing.Rectangle area)
