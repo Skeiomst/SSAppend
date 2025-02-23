@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip"
         MinWidth="520"
-        MinHeight="330">
+        MinHeight="330" KeyDown="Window_KeyDown">
 
     <Window.Resources>
         <Style x:Key="MenuButtonStyle" TargetType="Button">

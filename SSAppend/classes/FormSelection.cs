@@ -36,41 +36,7 @@ namespace SSAppend
             this.Cursor = Cursors.Cross;
         }
 
-        public Rectangle SelectArea()
-        {
-            this.ShowDialog();
-            return new Rectangle(
-                Math.Min(start.X, end.X),
-                Math.Min(start.Y, end.Y),
-                Math.Abs(end.X - start.X),
-                Math.Abs(end.Y - start.Y)
-                );
-        }
-
-        private void FormSelection_MouseDown(object sender, MouseEventArgs e)
-        {
-            selecting = true;
-            start = e.Location;
-            StartPoint = e.Location;
-        }
-
-        private void FormSelection_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (selecting)
-            {
-                end = e.Location;
-                this.Invalidate();
-            }
-        }
-
-        private void FormSelection_MouseUp(object sender, MouseEventArgs e)
-        {
-            selecting = false;
-            end = e.Location;
-            EndPoint = e.Location;
-            this.Close();
-        }
-
+        #region Methods
         protected override void OnPaint(PaintEventArgs e)
         {
             if (selecting)
@@ -98,7 +64,36 @@ namespace SSAppend
                 {
                     e.Graphics.DrawRectangle(pen, select);
                 }
-            }      
+            }
         }
+
+        #endregion Methods
+
+        #region Events
+        private void FormSelection_MouseDown(object sender, MouseEventArgs e)
+        {
+            selecting = true;
+            start = e.Location;
+            StartPoint = e.Location;
+        }
+
+        private void FormSelection_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (selecting)
+            {
+                end = e.Location;
+                this.Invalidate();
+            }
+        }
+
+        private void FormSelection_MouseUp(object sender, MouseEventArgs e)
+        {
+            selecting = false;
+            end = e.Location;
+            EndPoint = e.Location;
+            this.Close();
+        }
+
+        #endregion Events
     }
 }

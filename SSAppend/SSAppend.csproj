@@ -80,7 +80,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FormSelection.cs">
+    <Compile Include="classes\FormSelection.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="windows\Main.xaml.cs">

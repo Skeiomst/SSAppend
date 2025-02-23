@@ -6,6 +6,8 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Interop;
 using System.Runtime.InteropServices;
+using System.Windows.Input;
+using System.CodeDom;
 
 namespace SSAppend
 {
@@ -26,11 +28,7 @@ namespace SSAppend
             InitializeComponent();
         }
 
-        private void CaptureButton_Click(object sender, RoutedEventArgs e)
-        {
-            CaptureScreen();
-        }
-
+        #region Methods
         private void CaptureScreen()
         {
             this.Hide();
@@ -56,14 +54,6 @@ namespace SSAppend
             }
 
             this.Show();
-        }
-
-
-        private void btnLimpiar_Click(object sender, RoutedEventArgs e)
-        {
-            _screenshots.Clear();
-            finalImage = null;
-            imgPreview.Source = null;
         }
 
         private Bitmap CaptureWindow(System.Drawing.Rectangle area)
@@ -116,13 +106,14 @@ namespace SSAppend
                 return bitmapImage;
             }
         }
-        private void Image_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+
+        private void CopyToCliboard()
         {
             if (finalImage == null) return;
             Clipboard.SetImage(BitmapCovert(finalImage));
         }
 
-        private void Image_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void SaveImage()
         {
             if (finalImage == null) return;
 
@@ -149,5 +140,48 @@ namespace SSAppend
                 }
             }
         }
+
+        #endregion Methods
+
+        #region Events
+
+        private void CaptureButton_Click(object sender, RoutedEventArgs e)
+        {
+            CaptureScreen();
+        }
+
+        private void btnLimpiar_Click(object sender, RoutedEventArgs e)
+        {
+            _screenshots.Clear();
+            finalImage = null;
+            imgPreview.Source = null;
+        }
+
+        private void Image_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            CopyToCliboard();
+        }
+
+        private void Image_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            SaveImage();
+        }
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                if (e.Key == Key.C)
+                {
+                    CopyToCliboard();
+                }
+
+                if (e.Key == Key.S)
+                {
+                    SaveImage();
+                }
+            }
+        }
+
+        #endregion Events
     }
 }
